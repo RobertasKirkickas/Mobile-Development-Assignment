@@ -6,7 +6,7 @@ import {
   FlatList, 
   Image, 
   Dimensions, 
-  TouchableOpacity 
+  Pressable
 } from 'react-native';
 
 const { width } = Dimensions.get('window');
@@ -14,7 +14,7 @@ const ITEM_WIDTH = width * 0.75; // Card is 75% of screen width
 const ITEM_SPACING = 10;
 const FULL_ITEM_SIZE = ITEM_WIDTH + (ITEM_SPACING * 2);
 
-const HomeCarousel = ({ navigation }) => {
+const Home = ({ navigation }) => {
   const [featuredShows, setFeaturedShows] = useState([]);
 
   useEffect(() => {
@@ -24,9 +24,9 @@ const HomeCarousel = ({ navigation }) => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity 
+    <Pressable 
       activeOpacity={0.9}
-      onPress={() => navigation.navigate('ShowDetails', { id: item.id })}
+      onPress={() => navigation.navigate('Show Details', { showId: item.id })}
       style={styles.cardContainer}
     >
       <View style={styles.card}>
@@ -36,7 +36,7 @@ const HomeCarousel = ({ navigation }) => {
           <Text style={styles.rating}>⭐ {item.rating?.average || 'N/A'}</Text>
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 
   return (
@@ -66,7 +66,8 @@ const styles = StyleSheet.create({
     fontSize: 22, 
     fontWeight: 'bold', 
     marginLeft: 20, 
-    marginBottom: 15 
+    marginBottom: 15,
+	marginTop: 20,
   },
   listContent: { paddingHorizontal: (width - FULL_ITEM_SIZE) / 2 },
   cardContainer: { width: FULL_ITEM_SIZE, paddingHorizontal: ITEM_SPACING },
@@ -82,4 +83,4 @@ const styles = StyleSheet.create({
   rating: { color: '#aaa', fontSize: 14, marginTop: 4 }
 });
 
-export default HomeCarousel;
+export default Home;

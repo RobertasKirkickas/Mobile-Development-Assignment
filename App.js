@@ -14,20 +14,11 @@ const SearchPlaceholder = () => <View style={{ flex: 1, backgroundColor: '#000' 
 
 const Tab = createBottomTabNavigator();
 
-const BgTheme = {
-  ...DarkTheme,
-  colors: {
-    ...DarkTheme.colors,
-    background: '#000000',
-    card: '#121212',
-    text: '#ffffff',
-    primary: '#ffffff', // Color of the active icon
-  },
-};
 
 export default function App() {
   return (
     <NavigationContainer theme={BgTheme}>
+		
       <Tab.Navigator
         screenOptions={({ route }) => ({
           // This function determines which icon to show for each tab
@@ -59,11 +50,22 @@ export default function App() {
           headerTintColor: '#ffffff',
         })}
       >
-        <Tab.Screen name="Home" component={HomeNavigator} />
-        <Tab.Screen name="Shows" component={ShowsNavigator} />
-        <Tab.Screen name="Search" component={SearchPlaceholder} />
+        <Tab.Screen name="Home" component={HomeNavigator} options={{ headerShown: false }}/>
+        <Tab.Screen name="Shows" component={ShowsNavigator} options={{ headerShown: false }} />
+        <Tab.Screen name="Search" component={SearchPlaceholder} options={{ headerShown: false }} />
       </Tab.Navigator>
       <StatusBar style="light" />
     </NavigationContainer>
   );
 }
+
+const BgTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    background: '#000000',
+    card: '#121212',
+    text: '#ffffff',
+    primary: '#ffffff', // Color of the active icon
+  },
+};
