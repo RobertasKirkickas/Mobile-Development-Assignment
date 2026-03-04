@@ -12,7 +12,7 @@ export default function HomeNavigator() {
 		<Stack.Navigator style={styles.HomeNavigator}>
 			<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ headerShown: false }} />
 			<Stack.Screen name='ShowsScreen' component={ShowsScreen} options={{ headerShown: false }} />
-			<Stack.Screen name='Show Details' component={ShowDetailsScreen}/>
+			<Stack.Screen name='Show Details' component={ShowDetailsScreen} />
 		</Stack.Navigator>
 	);
 }

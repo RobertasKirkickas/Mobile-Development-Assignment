@@ -5,16 +5,16 @@ export default function ShowDetailsScreen({ route, navigation }) {
 	const [showData, setShowData] = useState();
 	const { showId } = route.params;
 
-    const getShowData = () => {
-        fetch('https://api.tvmaze.com/shows/' + showId) 
-            .then((response) => response.json())
-            .then((json) => {
-                setShowData(json); 
-            })
-            .catch((error) => {
-                console.error("Fetch Error:", error);
-            });
-    };
+	const getShowData = () => {
+		fetch('https://api.tvmaze.com/shows/' + showId)
+			.then((response) => response.json())
+			.then((json) => {
+				setShowData(json);
+			})
+			.catch((error) => {
+				console.error('Fetch Error:', error);
+			});
+	};
 
 	useEffect(() => {
 		getShowData();
@@ -24,7 +24,7 @@ export default function ShowDetailsScreen({ route, navigation }) {
 		<View style={styles.ShowDetailsScreen}>
 			{showData ? (
 				<View style={styles.ShowDetailsContainer}>
-					<Image style={styles.showImage} source={{ uri: showData.image?.medium }} />
+					<Image style={styles.showImage} source={{ uri: showData.image?.original || showData.image?.medium }} />
 					<View style={styles.metaDataContainer}>
 						<Text style={styles.metaDataText}>
 							<Text style={{ fontWeight: 'bold' }}>Show Name:</Text>
@@ -34,8 +34,6 @@ export default function ShowDetailsScreen({ route, navigation }) {
 							<Text style={{ fontWeight: 'bold' }}>Location:</Text>
 							{showData.network?.country?.name || 'N/A'}
 						</Text>
-
-					
 					</View>
 				</View>
 			) : (
@@ -48,29 +46,29 @@ export default function ShowDetailsScreen({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-    ShowDetailsScreen: {
-        flex: 1,
-    },
-    ShowDetailsContainer: {
-        flex: 1,
-    },
-    loadingContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#000',
-    },
-    showImage: {
-        width: '100%',
-        height: 450,
-        resizeMode: 'cover',
-    },
-    metaDataContainer: {
-        padding: 20,
-    },
-    metaDataText: {
-        fontSize: 17,
-        color: '#fff',
-        marginBottom: 10,
-    },
+	ShowDetailsScreen: {
+		flex: 1,
+	},
+	ShowDetailsContainer: {
+		flex: 1,
+	},
+	loadingContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		backgroundColor: '#000',
+	},
+	showImage: {
+		width: '100%',
+		height: 450,
+		resizeMode: 'cover',
+	},
+	metaDataContainer: {
+		padding: 20,
+	},
+	metaDataText: {
+		fontSize: 17,
+		color: '#fff',
+		marginBottom: 10,
+	},
 });

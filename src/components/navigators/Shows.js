@@ -8,7 +8,7 @@ export default function ShowsNavigator() {
 	const Stack = createStackNavigator();
 	return (
 		<Stack.Navigator style={styles.ShowsNavigator}>
-			<Stack.Screen name='Shows Screen' component={ShowsScreen} options={{ headerShown: false }}/>
+			<Stack.Screen name='Shows Screen' component={ShowsScreen} options={{ headerShown: false }} />
 			<Stack.Screen name='Show Details' component={ShowDetailsScreen} />
 		</Stack.Navigator>
 	);
