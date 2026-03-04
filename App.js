@@ -6,13 +6,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+// Screens
+import ActorsScreen from './src/screens/Actors';
+
 // Navigators
 import HomeNavigator from './src/components/navigators/Home';
 import ShowsNavigator from './src/components/navigators/Shows';
 
 const Tab = createBottomTabNavigator();
-
-const ActorsPlaceholder = () => <View style={{ flex: 1, backgroundColor: '#000' }} />;
 
 export default function App() {
 	return (
@@ -44,7 +45,7 @@ export default function App() {
 				>
 					<Tab.Screen name='Home' component={HomeNavigator} />
 					<Tab.Screen name='Shows' component={ShowsNavigator} />
-					<Tab.Screen name='Actors' component={ActorsPlaceholder} />
+					<Tab.Screen name='Actors' component={ActorsScreen} />
 				</Tab.Navigator>
 				<StatusBar style='light' />
 			</NavigationContainer>

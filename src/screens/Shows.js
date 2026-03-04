@@ -38,14 +38,13 @@ export default function ShowsScreen({ navigation }) {
 				</View>
 			) : (
 				<View style={styles.resultsContainer}>
-					<Text style={styles.sectionHeader}>{searchQuery.trim() ? `Results for "${searchQuery}"` : 'Browse All Shows'}</Text>
-
 					<FlatList
+						ListHeaderComponent={<Text style={styles.sectionHeader}>{searchQuery.trim() ? `Results for "${searchQuery}"` : 'Browse All Shows'}</Text>}
 						key={`shows-grid-${numberOfColumns}`}
 						data={dataToDisplay}
 						numColumns={numberOfColumns}
 						keyExtractor={(item) => item.id.toString()}
-						contentContainerStyle={styles.listPadding}
+						contentContainerStyle={[styles.listPadding]}
 						renderItem={({ item }) => (
 							<Pressable style={styles.resultImageTouchable} onPress={() => navigation.navigate('Show Details', { showId: item.id })}>
 								<Image style={styles.resultImage} source={{ uri: item.image?.medium || item.image?.original }} />
@@ -61,11 +60,9 @@ export default function ShowsScreen({ navigation }) {
 const styles = StyleSheet.create({
 	ShowsScreen: {
 		flex: 1,
-		backgroundColor: '#000',
 	},
 	resultsContainer: {
 		flex: 1,
-		marginTop: 110,
 	},
 	sectionHeader: {
 		color: '#fff',
@@ -77,6 +74,7 @@ const styles = StyleSheet.create({
 	listPadding: {
 		paddingHorizontal: 10,
 		paddingBottom: 100,
+		paddingTop: 110,
 	},
 	loadingContainer: {
 		flex: 1,

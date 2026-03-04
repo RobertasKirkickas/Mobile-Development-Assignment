@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View, TextInput, Pressable, Keyboard } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 
-export default function SearchForm({ searchQuery, setSearchQuery, setSearchResults, onClose }) {
+export default function SearchForm({ searchQuery, setSearchQuery, setSearchResults, onClose, searchType = 'shows' }) {
 	const requestIdRef = useRef(0);
 
 	const handleSearch = async (query, dismissKeyboard = false) => {
@@ -14,11 +14,15 @@ export default function SearchForm({ searchQuery, setSearchQuery, setSearchResul
 
 		try {
 			const currentRequestId = ++requestIdRef.current;
-			const res = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
-			const shows = await res.json();
+
+			// Logic to switch between shows and people endpoints
+			const endpoint = searchType === 'people' ? 'search/people' : 'search/shows';
+			const res = await fetch(`https://api.tvmaze.com/${endpoint}?q=${encodeURIComponent(query)}`);
+			const data = await res.json();
 
 			if (currentRequestId === requestIdRef.current) {
-				setSearchResults(shows.map((item) => item.show));
+				// Map to person if type is people, otherwise map to shows
+				setSearchResults(data.map((item) => (searchType === 'people' ? item.person : item.show)));
 			}
 		} catch (error) {
 			setSearchResults([]);
@@ -32,7 +36,14 @@ export default function SearchForm({ searchQuery, setSearchQuery, setSearchResul
 
 	return (
 		<View style={styles.searchForm}>
-			<TextInput style={styles.input} placeholder='Search shows...' placeholderTextColor='#888' value={searchQuery} onChangeText={setSearchQuery} autoFocus={true} />
+			<TextInput
+				style={styles.input}
+				placeholder={searchType === 'people' ? 'Search actors...' : 'Search shows...'}
+				placeholderTextColor='#888'
+				value={searchQuery}
+				onChangeText={setSearchQuery}
+				autoFocus={true}
+			/>
 			<Pressable onPress={onClose} style={styles.clearButton}>
 				<Feather name='x-circle' size={22} color='#888' />
 			</Pressable>
