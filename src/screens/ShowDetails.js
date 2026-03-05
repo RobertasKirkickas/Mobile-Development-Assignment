@@ -6,9 +6,62 @@ import {
   ActivityIndicator,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+
+const SeasonsInfo = ({ season }) => {
+  const [expanded, setExpanded] = useState(false);
+  const [episodes, setEpisodes] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Function to toggle season expansion and fetch episodes
+  const toggleExpand = () => {
+    if (!expanded && episodes.length === 0) {
+      setLoading(true);
+      fetch(`https://api.tvmaze.com/seasons/${season.id}/episodes`)
+        .then((res) => res.json())
+        .then((data) => {
+          setEpisodes(data);
+          setLoading(false);
+        });
+    }
+    setExpanded(!expanded);
+  };
+
+  return (
+    <View style={styles.seasonContainer}>
+      <TouchableOpacity style={styles.seasonHeader} onPress={toggleExpand}>
+        <Text style={styles.seasonTitle}>Season {season.number}</Text>
+        <Ionicons
+          name={expanded ? "chevron-up" : "chevron-down"}
+          size={20}
+          color="#1DB954"
+        />
+      </TouchableOpacity>
+
+      {expanded && (
+        <View style={styles.episodeList}>
+          {loading ? (
+            <ActivityIndicator color="#1DB954" style={{ marginVertical: 10 }} />
+          ) : (
+            episodes.map((ep) => (
+              <View key={ep.id} style={styles.episodeItem}>
+                <Text style={styles.episodeNumber}>
+                  {ep.number < 10 ? `0${ep.number}` : ep.number}
+                </Text>
+                <Text style={styles.episodeName} numberOfLines={1}>
+                  {ep.name}
+                </Text>
+              </View>
+            ))
+          )}
+        </View>
+      )}
+    </View>
+  );
+};
 
 export default function ShowDetailsScreen({ route, navigation }) {
   const [showData, setShowData] = useState();
@@ -35,15 +88,18 @@ export default function ShowDetailsScreen({ route, navigation }) {
   }, [showId]);
 
   useEffect(() => {
-    // Fetch show data
-    fetch(`https://api.tvmaze.com/shows/${showId}`)
-      .then((res) => res.json())
-      .then((data) => setShowData(data));
-
-    // Fetch show's seasons
-    fetch(`https://api.tvmaze.com/shows/${showId}/seasons`)
-      .then((res) => res.json())
-      .then((data) => setSeasons(data));
+    // Combined fetch for show and seasons
+    Promise.all([
+      fetch(`https://api.tvmaze.com/shows/${showId}`).then((res) => res.json()),
+      fetch(`https://api.tvmaze.com/shows/${showId}/seasons`).then((res) =>
+        res.json(),
+      ),
+    ])
+      .then(([show, seasonsData]) => {
+        setShowData(show);
+        setSeasons(seasonsData);
+      })
+      .catch((err) => console.error(err));
   }, [showId]);
 
   useEffect(() => {
@@ -51,6 +107,10 @@ export default function ShowDetailsScreen({ route, navigation }) {
       navigation.setOptions({
         title: showData.name,
         headerBackTitleVisible: false,
+        headerTransparent: true,
+        headerStyle: {
+          backgroundColor: "rgba(30, 30, 30, 0.6)",
+        },
       });
     }
   }, [showData, navigation]);
@@ -133,6 +193,12 @@ export default function ShowDetailsScreen({ route, navigation }) {
             <Text style={styles.summaryText}>
               {cleanHtmlTags(showData.summary)}
             </Text>
+
+            {/* Seasons */}
+            <Text style={styles.sectionHeader}>Seasons</Text>
+            {seasons.map((season) => (
+              <SeasonsInfo key={season.id} season={season} />
+            ))}
           </View>
         </View>
       ) : (
@@ -148,9 +214,11 @@ const styles = StyleSheet.create({
   // Main styles
   ShowDetailsScreen: {
     flex: 1,
+    paddingTop: 105,
   },
   ShowDetailsContainer: {
     flex: 1,
+    marginBottom: 100,
   },
   loadingContainer: {
     flex: 1,
@@ -248,4 +316,38 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     marginBottom: 25,
   },
+
+  // Seasons info styles
+  seasonContainer: {
+    backgroundColor: "#121212",
+    borderRadius: 8,
+    marginBottom: 10,
+    overflow: "hidden",
+  },
+  seasonHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+  },
+  seasonTitle: { color: "#fff", fontSize: 16, fontWeight: "600" },
+  episodeList: {
+    backgroundColor: "#1a1a1a",
+    paddingHorizontal: 15,
+    paddingBottom: 10,
+  },
+  episodeItem: {
+    flexDirection: "row",
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#333",
+    alignItems: "center",
+  },
+  episodeNumber: {
+    color: "#1DB954",
+    fontWeight: "bold",
+    marginRight: 15,
+    width: 25,
+  },
+  episodeName: { color: "#eee", fontSize: 14, flex: 1 },
 });
