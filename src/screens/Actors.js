@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, FlatList, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Image, ActivityIndicator, Pressable } from 'react-native';
 import Header from '../components/Header';
 import NoPhoto from '../media/images/no-photo.jpeg';
 
-export default function ActorsScreen() {
+export default function ActorsScreen({ navigation }) {
 	const [actors, setActors] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [searchQuery, setSearchQuery] = useState('');
@@ -20,12 +20,12 @@ export default function ActorsScreen() {
 	}, []);
 
 	const renderActor = ({ item }) => (
-		<View style={styles.actorCard}>
+		<Pressable style={styles.actorCard} onPress={() => navigation.navigate('Actor Details', { actorId: item.id })}>
 			<Image source={item.image ? { uri: item.image.original || item.image.medium } : NoPhoto} style={styles.avatar} />
 			<Text style={styles.actorName} numberOfLines={1}>
 				{item.name}
 			</Text>
-		</View>
+		</Pressable>
 	);
 
 	return (

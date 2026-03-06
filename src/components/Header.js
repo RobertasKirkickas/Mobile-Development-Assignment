@@ -20,7 +20,7 @@ const Header = ({ searchQuery, setSearchQuery, setSearchResults, searchType }) =
 				{!isSearching ? (
 					<>
 						<Text style={styles.logoText}>
-							SHOWS<Text style={{ color: '#1DB954' }}>HUB</Text>
+							SHOW<Text style={{ color: '#1DB954' }}>HUB</Text>
 						</Text>
 						<TouchableOpacity onPress={() => setIsSearching(true)}>
 							<Ionicons name='search' size={26} color='white' />

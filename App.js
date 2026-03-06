@@ -12,6 +12,7 @@ import ActorsScreen from './src/screens/Actors';
 // Navigators
 import HomeNavigator from './src/components/navigators/Home';
 import ShowsNavigator from './src/components/navigators/Shows';
+import ActorsNavigator from './src/components/navigators/Actors';
 
 const Tab = createBottomTabNavigator();
 
@@ -45,7 +46,7 @@ export default function App() {
 				>
 					<Tab.Screen name='Home' component={HomeNavigator} />
 					<Tab.Screen name='Shows' component={ShowsNavigator} />
-					<Tab.Screen name='Actors' component={ActorsScreen} />
+					<Tab.Screen name='Actors' component={ActorsNavigator} />
 				</Tab.Navigator>
 				<StatusBar style='light' />
 			</NavigationContainer>
