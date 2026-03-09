@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import NoImage from '../media/images/no-img.jpg';
 
 const SeasonsInfo = ({ season }) => {
 	const [expanded, setExpanded] = useState(false);
@@ -109,12 +110,7 @@ export default function ShowDetailsScreen({ route, navigation }) {
 				<View style={styles.ShowDetailsContainer}>
 					{/* Header image */}
 					<View style={styles.imageWrapper}>
-						<Image
-							style={styles.showImage}
-							source={{
-								uri: showData.image?.original || showData.image?.medium,
-							}}
-						/>
+						<Image style={styles.showImage} source={showData.image ? { uri: showData.image.original || showData.image.medium } : NoImage} />
 
 						{/* Vertical shadow */}
 						<LinearGradient colors={['rgba(0,0,0,0.8)', 'transparent', 'transparent', 'rgba(0,0,0,1)']} locations={[0, 0.2, 0.7, 1]} style={StyleSheet.absoluteFill} />
@@ -175,7 +171,7 @@ const styles = StyleSheet.create({
 	// Main styles
 	ShowDetailsScreen: {
 		flex: 1,
-		paddingTop: 105,
+		paddingTop: 90,
 	},
 	ShowDetailsContainer: {
 		flex: 1,
@@ -189,7 +185,8 @@ const styles = StyleSheet.create({
 	},
 	imageWrapper: {
 		width: '100%',
-		height: 450,
+		height: 650,
+		overflow: 'hidden',
 	},
 	showImage: {
 		width: '100%',

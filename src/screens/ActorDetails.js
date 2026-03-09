@@ -49,7 +49,7 @@ export default function ActorDetailsScreen({ route, navigation }) {
 				</Text>
 
 				{/* Only show credits if there are any */}
-				{credits && credits.length > 0 && (
+				{credits && credits.length > 0 ? (
 					<View>
 						<Text style={styles.sectionTitle}>Known For</Text>
 						<FlatList
@@ -72,6 +72,8 @@ export default function ActorDetailsScreen({ route, navigation }) {
 							)}
 						/>
 					</View>
+				) : (
+					<Text style={styles.details}>No other data was found.</Text>
 				)}
 			</View>
 			<View style={{ height: 110 }} />
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#000',
-		paddingTop: 105,
+		paddingTop: 90,
 	},
 	loading: {
 		flex: 1,
@@ -93,7 +95,7 @@ const styles = StyleSheet.create({
 	},
 	imageWrapper: {
 		width: '100%',
-		height: 450,
+		height: 550,
 	},
 	profileImage: {
 		width: '100%',

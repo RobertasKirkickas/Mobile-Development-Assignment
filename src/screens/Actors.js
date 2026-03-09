@@ -13,7 +13,10 @@ export default function ActorsScreen({ navigation }) {
 		fetch('https://api.tvmaze.com/people?page=1')
 			.then((res) => res.json())
 			.then((data) => {
-				setActors(data.slice(0, 20)); // Show top 20
+				// Shuffle the whole list
+				const shuffled = data.sort(() => Math.random() - 0.5);
+
+				setActors(shuffled.slice(0, 30)); // Random actor selection for Popular Actors section
 				setLoading(false);
 			})
 			.catch(() => setLoading(false));

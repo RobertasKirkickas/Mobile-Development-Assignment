@@ -6,9 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-// Screens
-import ActorsScreen from './src/screens/Actors';
-
 // Navigators
 import HomeNavigator from './src/components/navigators/Home';
 import ShowsNavigator from './src/components/navigators/Shows';
