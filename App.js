@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -30,13 +30,17 @@ export default function App() {
 							}
 							return <Ionicons name={iconName} size={size} color={color} />;
 						},
+
 						tabBarActiveTintColor: '#1DB954',
 						tabBarInactiveTintColor: '#888888',
+
 						tabBarStyle: {
 							backgroundColor: '#121212',
 							borderTopWidth: 0,
-							height: 60,
-							paddingBottom: 10,
+
+							// If Android height of tab navbar (85), for iOS/other 70
+							height: Platform.OS === 'android' ? 85 : 70,
+							paddingBottom: Platform.OS === 'android' ? 15 : 10,
 						},
 						headerShown: false,
 					})}
