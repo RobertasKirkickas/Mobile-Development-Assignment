@@ -12,7 +12,17 @@ export default function ActorDetailsScreen({ route, navigation }) {
 		Promise.all([fetch(`https://api.tvmaze.com/people/${actorId}`).then((res) => res.json()), fetch(`https://api.tvmaze.com/people/${actorId}/castcredits?embed=show`).then((res) => res.json())])
 			.then(([person, castCredits]) => {
 				setActorData(person);
-				setCredits(castCredits);
+
+				// Remove duplicate shows from credits (some actors have multiple roles in the same show)
+				const seen = new Set();
+				const uniqueCredits = castCredits.filter((item) => {
+					const showId = item._embedded.show.id;
+					const duplicate = seen.has(showId);
+					seen.add(showId);
+					return !duplicate;
+				});
+				setCredits(uniqueCredits);
+
 				setLoading(false);
 				navigation.setOptions({
 					title: person.name,

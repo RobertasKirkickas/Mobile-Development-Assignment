@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ActivityIndicator, Image, ScrollView, Touchable
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import NoImage from '../media/images/no-img.jpg';
+import NoPhoto from '../media/images/no-photo.jpeg';
 
 const SeasonsInfo = ({ season }) => {
 	const [expanded, setExpanded] = useState(false);
@@ -53,6 +54,7 @@ const SeasonsInfo = ({ season }) => {
 export default function ShowDetailsScreen({ route, navigation }) {
 	const [showData, setShowData] = useState();
 	const [seasons, setSeasons] = useState([]);
+	const [cast, setCast] = useState([]);
 	const { showId } = route.params;
 
 	// Regex to remove HTML tags like <p> and <b>
@@ -75,10 +77,15 @@ export default function ShowDetailsScreen({ route, navigation }) {
 
 	useEffect(() => {
 		// Combined fetch for show and seasons
-		Promise.all([fetch(`https://api.tvmaze.com/shows/${showId}`).then((res) => res.json()), fetch(`https://api.tvmaze.com/shows/${showId}/seasons`).then((res) => res.json())])
-			.then(([show, seasonsData]) => {
+		Promise.all([
+			fetch(`https://api.tvmaze.com/shows/${showId}`).then((res) => res.json()),
+			fetch(`https://api.tvmaze.com/shows/${showId}/seasons`).then((res) => res.json()),
+			fetch(`https://api.tvmaze.com/shows/${showId}/cast`).then((res) => res.json()),
+		])
+			.then(([show, seasonsData, castData]) => {
 				setShowData(show);
 				setSeasons(seasonsData);
+				setCast(castData);
 			})
 			.catch((err) => console.error(err));
 	}, [showId]);
@@ -146,6 +153,26 @@ export default function ShowDetailsScreen({ route, navigation }) {
 								</View>
 							))}
 						</View>
+
+						{/* Cast */}
+						{cast.length > 0 && (
+							<>
+								<Text style={styles.sectionHeader}>Cast</Text>
+								<ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.castScroll}>
+									{cast.map((item, index) => (
+										<TouchableOpacity key={index} style={styles.castMember} onPress={() => navigation.navigate('Actor Details', { actorId: item.person.id })}>
+											<Image style={styles.castImage} source={item.person.image ? { uri: item.person.image.medium } : NoPhoto} />
+											<Text style={styles.castName} numberOfLines={1}>
+												{item.person.name}
+											</Text>
+											<Text style={styles.characterName} numberOfLines={1}>
+												{item.character.name}
+											</Text>
+										</TouchableOpacity>
+									))}
+								</ScrollView>
+							</>
+						)}
 
 						{/* Summary */}
 						<Text style={styles.sectionHeader}>About the show</Text>
@@ -261,6 +288,34 @@ const styles = StyleSheet.create({
 		fontWeight: '600',
 	},
 
+	// Cast styles
+	castScroll: {
+		marginBottom: 50,
+	},
+	castMember: {
+		width: 80,
+		marginRight: 15,
+		alignItems: 'center',
+	},
+	castImage: {
+		width: 70,
+		height: 70,
+		borderRadius: 35,
+		backgroundColor: '#333',
+		marginBottom: 5,
+	},
+	castName: {
+		color: '#fff',
+		fontSize: 11,
+		fontWeight: 'bold',
+		textAlign: 'center',
+	},
+	characterName: {
+		color: '#888',
+		fontSize: 10,
+		textAlign: 'center',
+	},
+
 	// Summary
 	sectionHeader: {
 		color: '#fff',
@@ -288,7 +343,11 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: 15,
 	},
-	seasonTitle: { color: '#fff', fontSize: 16, fontWeight: '600' },
+	seasonTitle: {
+		color: '#fff',
+		fontSize: 16,
+		fontWeight: '600',
+	},
 	episodeList: {
 		backgroundColor: '#1a1a1a',
 		paddingHorizontal: 15,
@@ -307,5 +366,9 @@ const styles = StyleSheet.create({
 		marginRight: 15,
 		width: 25,
 	},
-	episodeName: { color: '#eee', fontSize: 14, flex: 1 },
+	episodeName: {
+		color: '#eee',
+		fontSize: 14,
+		flex: 1,
+	},
 });

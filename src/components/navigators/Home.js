@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../../screens/Home';
 import ShowsScreen from '../../screens/Shows';
 import ShowDetailsScreen from '../../screens/ShowDetails';
+import ActorDetailsScreen from '../../screens/ActorDetails';
 
 export default function HomeNavigator() {
 	const Stack = createStackNavigator();
@@ -13,6 +14,7 @@ export default function HomeNavigator() {
 			<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ headerShown: false }} />
 			<Stack.Screen name='ShowsScreen' component={ShowsScreen} options={{ headerShown: false }} />
 			<Stack.Screen name='Show Details' component={ShowDetailsScreen} />
+			<Stack.Screen name='Actor Details' component={ActorDetailsScreen} />
 		</Stack.Navigator>
 	);
 }
