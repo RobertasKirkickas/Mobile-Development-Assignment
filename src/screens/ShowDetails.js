@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
 	},
 	imageWrapper: {
 		width: '100%',
-		height: 650,
+		height: 550,
 		overflow: 'hidden',
 	},
 	showImage: {
