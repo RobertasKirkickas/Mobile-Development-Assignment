@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, Image, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import NoImage from '../media/images/no-img.jpg';
@@ -98,7 +98,8 @@ export default function ShowDetailsScreen({ route, navigation }) {
 				headerBackTitle: '',
 				headerTransparent: true,
 				headerStyle: {
-					backgroundColor: 'rgba(30, 30, 30, 0.6)',
+					backgroundColor: 'rgba(20,20,20,0.8)',
+					height: Platform.OS === 'android' ? 90 : 90,
 				},
 			});
 		}
@@ -120,13 +121,13 @@ export default function ShowDetailsScreen({ route, navigation }) {
 						<Image style={styles.showImage} source={showData.image ? { uri: showData.image.original || showData.image.medium } : NoImage} />
 
 						{/* Vertical shadow */}
-						<LinearGradient colors={['rgba(0,0,0,0.8)', 'transparent', 'transparent', 'rgba(0,0,0,1)']} locations={[0, 0.2, 0.7, 1]} style={StyleSheet.absoluteFill} />
+						<LinearGradient colors={['rgba(26,26,26,0.7)', 'transparent', 'transparent', '#1A1A1A']} locations={[0, 0.3, 0.8, 1]} style={StyleSheet.absoluteFill} />
 
 						{/* Horizontal shadow */}
 						<LinearGradient
 							start={{ x: 0, y: 0.5 }}
 							end={{ x: 1, y: 0.5 }}
-							colors={['rgba(0,0,0,0.6)', 'transparent', 'transparent', 'rgba(0,0,0,0.6)']}
+							colors={['rgba(26,26,26,0.6)', 'transparent', 'transparent', 'rgba(26,26,26,0.6)']}
 							locations={[0, 0.1, 0.9, 1]}
 							style={StyleSheet.absoluteFill}
 						/>
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
 	},
 	ShowDetailsContainer: {
 		flex: 1,
-		marginBottom: 100,
+		marginBottom: 200,
 	},
 	loadingContainer: {
 		flex: 1,

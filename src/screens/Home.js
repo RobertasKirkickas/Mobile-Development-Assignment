@@ -17,6 +17,14 @@ const Home = ({ navigation }) => {
 	const [searchLoading, setSearchLoading] = useState(false);
 	const numberOfColumns = 2;
 
+	// Greeting based on time of day
+	const getGreeting = () => {
+		const hours = new Date().getHours();
+		if (hours < 12) return 'Good Morning';
+		if (hours < 18) return 'Good Afternoon';
+		return 'Good Evening';
+	};
+
 	useEffect(() => {
 		fetch('https://api.tvmaze.com/shows')
 			.then((res) => res.json())
@@ -42,12 +50,16 @@ const Home = ({ navigation }) => {
 	const renderFeaturedItem = ({ item }) => (
 		<Pressable onPress={() => navigation.navigate('Show Details', { showId: item.id })} style={styles.cardContainer}>
 			<View style={styles.card}>
-				<Image source={{ uri: item.image?.original || item.image?.medium }} style={styles.image} />
+				<Image style={styles.image} source={item.image ? { uri: item.image.original || item.image.medium } : NoImage} />
 				<LinearGradient colors={['transparent', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,1)']} locations={[0.6, 0.8, 1]} style={StyleSheet.absoluteFill} />
 				<View style={styles.info}>
+					<View style={styles.genreBadge}>
+						<Text style={styles.genreBadgeText}>{item.genres?.[0] || 'Must Watch'}</Text>
+					</View>
 					<Text style={styles.title} numberOfLines={1}>
 						{item.name}
 					</Text>
+
 					<Text style={styles.rating}>⭐ {item.rating?.average || 'N/A'}</Text>
 				</View>
 			</View>
@@ -56,7 +68,7 @@ const Home = ({ navigation }) => {
 
 	const renderMoreShowItem = ({ item }) => (
 		<Pressable style={styles.moreShowsItem} onPress={() => navigation.navigate('Show Details', { showId: item.id })}>
-			<Image source={{ uri: item.image?.original || item.image?.medium }} style={styles.moreShowsImage} />
+			<Image source={item.image ? { uri: item.image.original || item.image.medium } : NoImage} style={styles.moreShowsImage} />
 		</Pressable>
 	);
 
@@ -94,6 +106,10 @@ const Home = ({ navigation }) => {
 					columnWrapperStyle={styles.moreShowsColumn}
 					ListHeaderComponent={
 						<>
+							<View style={styles.welcomeSection}>
+								<Text style={styles.greetingText}>{getGreeting()},</Text>
+								<Text style={styles.subGreetingText}>What are we discovering today?</Text>
+							</View>
 							<Text style={styles.header}>Featured Today</Text>
 							<FlatList
 								data={featuredShows}
@@ -118,7 +134,6 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#000',
 	},
 	header: {
 		color: '#fff',
@@ -126,7 +141,38 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginLeft: 20,
 		marginBottom: 15,
-		marginTop: 110,
+		marginTop: 30,
+	},
+	welcomeSection: {
+		marginTop: 120,
+		marginLeft: 20,
+		marginBottom: 10,
+	},
+	greetingText: {
+		color: '#fff',
+		fontSize: 28,
+		fontWeight: '900',
+		letterSpacing: -0.5,
+	},
+	subGreetingText: {
+		color: '#888',
+		fontSize: 16,
+		fontWeight: '500',
+		marginTop: 2,
+	},
+	genreBadge: {
+		backgroundColor: '#E50914',
+		paddingHorizontal: 8,
+		paddingVertical: 3,
+		borderRadius: 5,
+		alignSelf: 'flex-start',
+		marginBottom: 8,
+	},
+	genreBadgeText: {
+		color: '#fff',
+		fontSize: 10,
+		fontWeight: 'bold',
+		textTransform: 'uppercase',
 	},
 
 	// Featured shows styles
@@ -192,6 +238,7 @@ const styles = StyleSheet.create({
 	listPadding: {
 		paddingHorizontal: 10,
 		paddingBottom: 100,
+		paddingTop: 100,
 	},
 	resultImage: {
 		flex: 1,

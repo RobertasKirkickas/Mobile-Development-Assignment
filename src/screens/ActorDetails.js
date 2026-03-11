@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, ActivityIndicator, FlatList, Pressable } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, ActivityIndicator, FlatList, Pressable, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ActorDetailsScreen({ route, navigation }) {
@@ -30,7 +30,8 @@ export default function ActorDetailsScreen({ route, navigation }) {
 					headerBackTitle: '',
 					headerBackTitleVisible: false,
 					headerStyle: {
-						backgroundColor: 'rgba(30, 30, 30, 0.6)',
+						backgroundColor: 'rgba(20,20,20,0.8)',
+						height: Platform.OS === 'android' ? 90 : 90,
 					},
 				});
 			})
@@ -48,7 +49,7 @@ export default function ActorDetailsScreen({ route, navigation }) {
 		<ScrollView style={styles.container} bounces={false}>
 			<View style={styles.imageWrapper}>
 				<Image source={actorData.image ? { uri: actorData.image.original } : require('../media/images/no-photo.jpeg')} style={styles.profileImage} />
-				<LinearGradient colors={['rgba(0,0,0,0.6)', 'transparent', 'black']} style={StyleSheet.absoluteFill} />
+				<LinearGradient colors={['rgba(26,26,26,0.7)', 'transparent', 'transparent', '#1A1A1A']} locations={[0, 0.3, 0.8, 1]} style={StyleSheet.absoluteFill} />
 			</View>
 
 			<View style={styles.infoSection}>
@@ -94,13 +95,12 @@ export default function ActorDetailsScreen({ route, navigation }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#000',
 		paddingTop: 90,
 	},
 	loading: {
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: '#000',
+		backgroundColor: '#1A1A1A',
 		alignItems: 'center',
 	},
 	imageWrapper: {
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
 	infoSection: {
 		padding: 20,
 		marginTop: -60,
+		marginBottom: 100,
 	},
 	name: {
 		color: '#fff',

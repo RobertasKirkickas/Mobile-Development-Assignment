@@ -41,7 +41,9 @@ const styles = StyleSheet.create({
 		left: 0,
 		right: 0,
 		zIndex: 10,
-		backgroundColor: 'rgba(0,0,0,0.5)',
+		backgroundColor: 'rgba(20,20,20,0.8)',
+		borderBottomWidth: 0.5,
+		borderBottomColor: 'rgba(255, 255, 255, 0.1)',
 	},
 	headerContent: {
 		height: 60,
@@ -50,7 +52,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		paddingHorizontal: 20,
 	},
-	logoText: { color: 'white', fontSize: 22, fontWeight: '900' },
+	logoText: {
+		color: 'white',
+		fontSize: 22,
+		fontWeight: '900',
+	},
 });
 
 export default Header;

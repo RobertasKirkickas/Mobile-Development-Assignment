@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { BlurView } from 'expo-blur';
 
 // Navigators
 import HomeNavigator from './src/components/navigators/Home';
@@ -28,19 +29,36 @@ export default function App() {
 							} else if (route.name === 'Actors') {
 								iconName = focused ? 'people' : 'people-outline';
 							}
-							return <Ionicons name={iconName} size={size} color={color} />;
+							return <Ionicons name={iconName} size={30} color={color} />;
 						},
 
 						tabBarActiveTintColor: '#1DB954',
-						tabBarInactiveTintColor: '#888888',
+						tabBarInactiveTintColor: '#ffffff',
 
+						tabBarBackground: () => (
+							<View style={{ flex: 1, overflow: 'hidden' }}>
+								{Platform.OS === 'ios' ? (
+									// iOS - blur effect
+									<BlurView tint='dark' intensity={80} style={StyleSheet.absoluteFill} />
+								) : (
+									// Android - semi-transparent view
+									<View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(20, 20, 20, 0.95)' }]} />
+								)}
+							</View>
+						),
 						tabBarStyle: {
-							backgroundColor: '#121212',
+							backgroundColor: 'transparent',
 							borderTopWidth: 0,
+							position: 'absolute',
+							elevation: 0,
 
 							// If Android height of tab navbar (85), for iOS/other 70
 							height: Platform.OS === 'android' ? 85 : 70,
 							paddingBottom: Platform.OS === 'android' ? 15 : 10,
+
+							// Subtle border on Android to separate tab bar from content
+							borderTopColor: Platform.OS === 'android' ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+							borderTopWidth: Platform.OS === 'android' ? 0.5 : 0,
 						},
 						headerShown: false,
 					})}
@@ -59,9 +77,9 @@ const BgTheme = {
 	...DarkTheme,
 	colors: {
 		...DarkTheme.colors,
-		background: '#000000',
-		card: '#121212',
+		background: '#1A1A1A',
+		card: '#1A1A1A',
 		text: '#ffffff',
-		primary: '#ffffff',
+		primary: '#1DB954',
 	},
 };

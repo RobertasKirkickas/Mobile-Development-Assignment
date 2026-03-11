@@ -56,7 +56,7 @@ export default function ShowsScreen({ navigation }) {
 
 	const GenreList = () => (
 		<View>
-			<Text style={styles.sectionHeader}>{selectedGenre ? selectedGenre : searchQuery.trim() ? `Search: ${searchQuery}` : 'Browse All Shows'}</Text>
+			<Text style={styles.sectionHeader}>{selectedGenre ? selectedGenre : searchQuery.trim() ? `Search results for '${searchQuery}'` : 'Browse All Shows'}</Text>
 
 			<ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.genreContainer}>
 				{/* Resets selection */}
