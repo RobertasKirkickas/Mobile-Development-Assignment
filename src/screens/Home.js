@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
 
 	// Featured shows styles
 	listContent: {
-		paddingHorizontal: (width - FULL_ITEM_SIZE) / 2,
+		paddingHorizontal: (width - FULL_ITEM_SIZE) / 2 - 50,
 	},
 	cardContainer: {
 		width: FULL_ITEM_SIZE,
